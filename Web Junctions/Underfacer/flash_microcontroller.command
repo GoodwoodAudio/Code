@@ -1,15 +1,48 @@
 #!/bin/bash
 
-# Full folder path to your firmware
-SCRIPT_DIR="/Users/chippo/Documents/GitHub/Code/Web Junctions/Underfacer"
-HEXFILE="$SCRIPT_DIR/firmware.hex"
+# Locate this script's own folder — works no matter where Google Drive is mounted
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Check firmware exists
-if [ ! -f "$HEXFILE" ]; then
-    echo "Error: firmware.hex not found in $SCRIPT_DIR"
+# Check avrdude is installed on this Mac
+if ! command -v avrdude >/dev/null 2>&1; then
+    echo "Error: avrdude is not installed on this Mac."
+    echo "Install it once with:  brew install avrdude"
     read -p "Press enter to exit"
     exit 1
 fi
+
+# Find the .hex firmware file(s) in this folder
+shopt -s nullglob
+HEXFILES=("$SCRIPT_DIR"/*.hex)
+shopt -u nullglob
+
+if [ ${#HEXFILES[@]} -eq 0 ]; then
+    echo "Error: no .hex file found in this folder."
+    echo "Folder: $SCRIPT_DIR"
+    read -p "Press enter to exit"
+    exit 1
+elif [ ${#HEXFILES[@]} -eq 1 ]; then
+    # Only one firmware here — use it automatically
+    HEXFILE="${HEXFILES[0]}"
+else
+    # Several firmware versions here — ask which one to flash
+    echo "Multiple firmware files found. Which one do you want to flash?"
+    i=1
+    for f in "${HEXFILES[@]}"; do
+        echo "  $i) $(basename "$f")"
+        i=$((i+1))
+    done
+    read -p "Enter a number: " HEXNUM
+    if ! [[ "$HEXNUM" =~ ^[0-9]+$ ]] || [ "$HEXNUM" -lt 1 ] || [ "$HEXNUM" -gt ${#HEXFILES[@]} ]; then
+        echo "Invalid selection. Exiting."
+        read -p "Press enter to exit"
+        exit 1
+    fi
+    HEXFILE="${HEXFILES[$((HEXNUM-1))]}"
+fi
+
+echo "Firmware: $(basename "$HEXFILE")"
+echo ""
 
 # Ask for chip type once
 echo "Select microcontroller to flash for this session:"
@@ -25,7 +58,7 @@ case $CHIP in
     *) echo "Invalid selection. Exiting."; exit 1;;
 esac
 
-echo "Flashing $CHIP_NAME boards. Press Ctrl+C or Q to quit."
+echo "Flashing $CHIP_NAME boards with $(basename "$HEXFILE"). Press Ctrl+C or Q to quit."
 
 # Flash loop
 while true; do

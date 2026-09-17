@@ -1,0 +1,111 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2820
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 ========================================\
+  FLASHING BOARDS \'97 SETUP & HOW TO USE\
+========================================\
+\
+This folder contains everything you need to flash a microcontroller\
+without opening any code:\
+\
+  - flash_microcontroller.command   (the script you run)\
+  - a firmware file ending in .hex   (the firmware that gets flashed)\
+\
+Keep the script and the .hex file(s) together in this folder. The\
+script automatically finds the firmware next to itself, so it doesn't\
+matter where your Google Drive lives on your Mac.\
+\
+The .hex file can be named anything (e.g. underfacer_v2.hex) so you\
+can keep track of versions over time:\
+\
+  - If there's ONE .hex file in the folder, the script uses it\
+    automatically.\
+  - If there are SEVERAL .hex files, the script lists them and asks\
+    which one you want to flash.\
+\
+\
+----------------------------------------\
+ONE-TIME SETUP (do this once per Mac)\
+----------------------------------------\
+\
+1) INSTALL AVRDUDE\
+   This is the tool that actually talks to the board. Open the\
+   Terminal app (find it with Spotlight: press Cmd+Space, type\
+   "Terminal", hit Enter) and paste this line, then press Enter:\
+\
+       brew install avrdude\
+\
+   If you get "command not found: brew", you first need Homebrew.\
+   Paste this, press Enter, and follow the prompts, then run the\
+   line above again:\
+\
+       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"\
+\
+2) MAKE THE SCRIPT RUNNABLE\
+   Google Drive removes the "runnable" flag from the file, so turn\
+   it back on once. In Terminal, type this exactly (with a trailing\
+   space), then DRAG the flash_microcontroller.command file from\
+   Finder onto the Terminal window \'97 it fills in the path for you \'97\
+   then press Enter:\
+\
+       chmod +x\
+\
+   (So the finished line looks like:\
+       chmod +x /Users/you/.../flash_microcontroller.command )\
+\
+\
+----------------------------------------\
+RUNNING IT\
+----------------------------------------\
+\
+- First time only: RIGHT-CLICK the flash_microcontroller.command\
+  file and choose "Open". macOS will warn that it's from an\
+  unidentified developer \'97 click "Open" to confirm. After this\
+  first time, you can just double-click it normally.\
+\
+- Plug in your programmer and board.\
+\
+- Double-click flash_microcontroller.command. A window opens:\
+\
+    * If the folder has more than one .hex file, it lists them and\
+      asks which to flash \'97 type the number and press Enter.\
+\
+    * Then it asks which chip you're flashing:\
+          1) ATtiny44\
+          2) ATtiny84\
+          3) ATmega328PB\
+      Type 1, 2, or 3 and press Enter.\
+\
+- It flashes the board, then waits. Press Enter to flash the next\
+  board, or type Q and press Enter to quit. Great for flashing a\
+  batch of the same chip in a row.\
+\
+\
+----------------------------------------\
+IF SOMETHING GOES WRONG\
+----------------------------------------\
+\
+"avrdude is not installed"\
+   -> Do step 1 above (brew install avrdude).\
+\
+"no .hex file found in this folder"\
+   -> Make sure the firmware (.hex) file is in the SAME folder as\
+      the script. Don't move the script out on its own.\
+\
+The window flashes open and closes instantly\
+   -> The script hasn't been made runnable. Do step 2 above.\
+\
+"cannot be opened because it is from an unidentified developer"\
+   -> Right-click the file and choose "Open" (not double-click)\
+      the first time. See "Running it" above.\
+\
+Board won't flash / avrdude errors\
+   -> Check the programmer and board are plugged in properly and\
+      you picked the right chip number.\
+\
+\
+Questions? Ask Chippo.}

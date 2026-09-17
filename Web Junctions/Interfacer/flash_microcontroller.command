@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Full folder path to your firmware
-SCRIPT_DIR="/Users/chippo/Documents/GitHub/Code/Custom Junctions/WDW"
+SCRIPT_DIR="/Users/chippo/Documents/GitHub/Code/Web Junctions/Interfacer"
 HEXFILE="$SCRIPT_DIR/firmware.hex"
 
 # Check firmware exists
