@@ -6,7 +6,16 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Check avrdude is installed on this Mac
 if ! command -v avrdude >/dev/null 2>&1; then
     echo "Error: avrdude is not installed on this Mac."
-    echo "Install it once with:  brew install avrdude"
+    echo ""
+    echo "One-time setup - run these in the Terminal app, IN ORDER:"
+    echo ""
+    echo "1) If you don't already have Homebrew, install it first:"
+    echo '   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+    echo ""
+    echo "2) Once Homebrew has finished, install avrdude:"
+    echo "   brew install avrdude"
+    echo ""
+    echo "Then run this script again."
     read -p "Press enter to exit"
     exit 1
 fi
